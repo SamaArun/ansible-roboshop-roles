@@ -1,0 +1,5 @@
+CART_HOST: Cart server IP
+USER_HOST: User server IP
+RABBITMQ_HOST: rabbitmq server IP
+RABBITMQ_USER: roboshop
+RABBITMQ_PASSWORD: roboshop123
