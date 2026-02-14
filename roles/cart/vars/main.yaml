@@ -1,0 +1,2 @@
+CATALOGUE_HOST: catalogue server IpAddress
+REDIS_HOST: Redis server IpAddress
