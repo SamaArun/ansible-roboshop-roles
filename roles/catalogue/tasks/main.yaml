@@ -1,0 +1,55 @@
+- name: app setup
+  include_roles:
+    name: common
+    tasks_from: app-setup
+
+- name: app setup
+  include_roles:
+    name: common
+    tasks_from: nodejs
+    
+
+- name: copy mongodb repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: install mongodb client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
+
+- name: check products loaded or not
+  ansible.builtin.command: mongosh --host 172.31.22.123 --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: catalogue_output
+
+- name: print catalogue output
+  ansible.builtin.debug:
+    msg: "{{ catalogue_output }}"
+
+- name: load products
+  ansible.builtin.shell: mongosh --host 172.31.22.123 </app/db/master-data.js
+  when: catalogue_output.stdout | int < 0
+
+- name: systemd setup
+  include_roles:
+    name: common
+    tasks_from: systemd.yaml
+
+
+
+
+# ansible templates
+# =================
+# follows jinja2 formatting, we can keep some placeholders, actual values will be provided through variables at runtime.
+
+# tasks
+# 	main.yaml --> playbook related tasks are her
+# files
+# 	<file-name> --> you can keep all the files required here
+# templates
+# 	<template-file> --> we can keep all the templates with placeholders here. usually we follow jinja2 templating, variables values can be supplied
+# vars
+# 	main.yaml --> all variables required for roles can be kept here.
+# handlers --> handlers are notifiers in ansible. when there is a change in something if you want to notify other task we can use handlers. for example change in nginx configure can notify restart nginx task in handlers
+# 	main.yaml
