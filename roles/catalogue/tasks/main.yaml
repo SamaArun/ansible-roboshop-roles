@@ -3,7 +3,7 @@
     name: common
     tasks_from: app-setup
 
-- name: app setup
+- name: nodejs setup
   include_roles:
     name: common
     tasks_from: nodejs
@@ -53,3 +53,5 @@
 # 	main.yaml --> all variables required for roles can be kept here.
 # handlers --> handlers are notifiers in ansible. when there is a change in something if you want to notify other task we can use handlers. for example change in nginx configure can notify restart nginx task in handlers
 # 	main.yaml
+
+#run as ansible-playbook -i inventory.ini -e "component-catalogue" main.yaml

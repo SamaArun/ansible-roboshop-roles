@@ -1,0 +1,9 @@
+- name: Restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+
+
+
+  # handlers --> handlers are notifiers in ansible. when there is a change in something if you want to notify other task we can use handlers. for example change in nginx configure can notify restart nginx task in handlers
+	# main.yaml
