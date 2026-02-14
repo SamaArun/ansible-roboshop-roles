@@ -1,3 +1,4 @@
 CATALOGUE_HOST : IP ADDRESS OF catalogue server
 USER_HOST: IP ADDRESS OF user server
-CART_HOST: IP ADDRESS OF user server
+CART_HOST: IP ADDRESS OF cart server
+SHIPPING_HOST: IP ADDRESS OF shipping server
