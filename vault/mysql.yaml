@@ -1,0 +1,13 @@
+#we need to create vault inside server 
+# mkdir vault
+# cd vault/
+# ansible-vault create mysql.yaml
+# enter password
+# confirm password
+
+# inside: MYSQL_ROOT_PASSWORD : RoboShop@1
+
+
+
+###
+#ansible-playbook -i inventory.ini mysql.yaml -e "component=mysql" --ask-vault-pass
