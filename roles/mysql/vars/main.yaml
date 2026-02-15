@@ -2,3 +2,12 @@ MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/mysql/mysql_roo
 
 
 #ansible-playbook -i inventory.ini mysql.yaml -e "componet=mysql"
+
+# SSM parameter store
+
+# Linux --> Server, Ansible --> Platform
+# HashiCorp Vault --> Install, manage, update, upgrade
+
+# Linux/ansible integrate with vault softwares
+
+#We were using ansible vault, but there are challenges to maintain the passwords and vaut files, so I recently proposed SSM parameter store, I did POC and Removed vault and implemented SSM parameter store successfully...
