@@ -22,19 +22,35 @@
 - name: check products loaded or not
   ansible.builtin.command: mongosh --host 172.31.22.123 --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
+  #ingnore_errors: true
+  #ingonre_unreachable: true
 
 - name: print catalogue output
   ansible.builtin.debug:
     msg: "{{ catalogue_output }}"
+  #ingnore_errors: true
+  #ingonre_unreachable: true
+
 
 - name: load products
   ansible.builtin.shell: mongosh --host 172.31.22.123 </app/db/master-data.js
   when: catalogue_output.stdout | int < 0
+  #ingnore_errors: true
+  #ingonre_unreachable: true
 
 - name: systemd setup
   include_roles:
     name: common
     tasks_from: systemd.yaml
+
+
+- name: deployment
+  tags:
+  - deployment
+  import_role:
+  #include_roles: we need to give tags to every task
+    name: common
+    tasks_from: deployment
 
 
 
@@ -55,3 +71,28 @@
 # 	main.yaml
 
 #run as ansible-playbook -i inventory.ini -e "component-catalogue" main.yaml
+
+# We can include other roles using include_role or import_role
+
+# include_role --> it will include tasks in run time, it will validate also in run time, it will not pre process.
+
+# Tags and when conditions apply only to the include_role statement itself, not the tasks within the role.
+
+# import_role --> ansible validate import_role before playbook execution
+# Tags and when conditions apply to the imported role and its tasks.
+
+# ansible error handling
+# ======================
+# Error handling means what should we do when error comes, what should we do when error not comes.
+
+# if we are able to handle the error, we can keep ignore_errors true and then execute another task in case of failure
+
+# id roboshop
+# 	if created already, we are skipping
+# 	otherwise we are creating
+	
+# imagine, there is no user module available
+
+# a task executes id roboshop -> task fails if user not available, usually script exit because of this error
+
+# another task create user, if rc != 0

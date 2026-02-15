@@ -1,0 +1,41 @@
+- name: stop the service
+  # tags:
+  # - deployment
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: stopped
+
+- name: remove /app directory
+  ansible.builtin.file:
+    state: absent
+    path: /app
+
+- name: create /app directory
+  ansible.builtin.file:
+    state: directory
+    path: /app
+
+- name: download application
+  ansible.builtin.unarchive:
+    src: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v{{ app_version }}.zip"
+    dest: /app
+    remove_src: yes
+
+- name: install dependencies
+  # tags:
+  # - deployment
+  community.general.npm:
+  path: /app
+
+- name: restart {{ component }}
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: restarted
+
+
+# announce downtime 6hrs
+# ---------------------
+# stop catalogue service
+# remove old code -> I can remove /app directory, create again and download new version code
+# download new code
+# restart catalogue
